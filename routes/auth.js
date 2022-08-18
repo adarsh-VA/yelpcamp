@@ -17,12 +17,9 @@ router.get('/register',(req,res)=>{
     res.render('register',{tl:"Login"});
 })
 
-// passport.authenticate('local',{failureFlash:true,failureRedirect:'/login'}),
 router.post('/login',checkReturn,passport.authenticate('local',{failureFlash: true,failureRedirect:'/login'}),(req,res)=>{
     const urll = res.locals.return || '/campgrounds';
     req.flash('success','Logged in!');
-    // console.log('log:',res.locals.return);
-    // console.log(req.user._id);
     res.redirect(urll);
 })
 

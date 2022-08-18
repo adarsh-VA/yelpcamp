@@ -43,7 +43,6 @@ router.get('/each/:id',Wrap(async(req,res)=>{
 
 router.patch('/update/:id',isLoggedIn,upload.array('image'),validatecamp,Wrap(async(req,res)=>{
     let id = req.params.id;
-    console.log(req.body);
     let c = await cam.findByIdAndUpdate(id,req.body.camp);
     let im = req.files.map(f=>({url:f.path, filename:f.filename}));
     c.images.push(...im);
@@ -53,17 +52,11 @@ router.patch('/update/:id',isLoggedIn,upload.array('image'),validatecamp,Wrap(as
             await cloudinary.uploader.destroy(fname);
         }
         await c.updateOne({$pull:{images:{filename:{$in: req.body.deleteImages}}}});
-        console.log(c);
     }
     
     req.flash('success','successfully updated campground!');
     res.redirect(`/campgrounds/each/${id}`)
 }))
-
-// const f1 = ()=>{
-//     console.log(id1===id2);
-//     console.log("fucntion has called");
-// }
 
 router.post('/create',isLoggedIn,upload.array('image'),Wrap(async(req,res,next)=>{
     // if(!req.body.camp) throw new AE("Invalid Campground Data",400);
@@ -71,14 +64,9 @@ router.post('/create',isLoggedIn,upload.array('image'),Wrap(async(req,res,next)=
     c.author = req.user.id;
     c.images = req.files.map(f=>({url:f.path, filename:f.filename}));
     await c.save();
-    console.log(c);
     req.flash('success','successfully created campground!');
     res.redirect('/campgrounds');
 }))
-// router.post('/create',isLoggedIn,upload.single('camp[image]'),(req,res,next)=>{
-//     console.log(req.file,req.body.camp);
-//     res.redirect('/campgrounds');
-// });
 
 router.delete('/:id',isLoggedIn,Wrap(async(req,res)=>{
     let id = req.params.id;
