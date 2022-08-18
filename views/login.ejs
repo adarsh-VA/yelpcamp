@@ -1,0 +1,23 @@
+<%- layout('layouts/boilerplate') %> 
+<div class="col-4">
+    <h1>Login</h1>
+<form action="/login" method="post" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input type="text" class="form-control" id="username" name="username" aria-describedby="emailHelp" required>
+      <div class="valid-feedback">
+        Looks good!
+    </div>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" name="password" id="password" required>
+      <div class="valid-feedback">
+        Looks good!
+    </div>
+    </div>
+    <p>Not a User? <a href="/register">Create Account</a></p>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
+</div>
+<script src="/js/validateForms.js"></script>

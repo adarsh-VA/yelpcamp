@@ -1,0 +1,61 @@
+<%- layout('layouts/boilerplate') %>
+<h1>New Campgrounds</h1>
+<div class="col-4">
+    <form action="/campgrounds/create" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+        <div class="mb-3 ">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="camp[title]" class="form-control" id="title" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="mb-3 ">
+            <label for="location" class="form-label">Location</label>
+                <input type="text" name="camp[location]" class="form-control" id="location" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        
+        <div class="custom-file mb-3">
+            <label for="file" class="form-label">Upload Image</label>
+            <input type="file" class="form-control" id="file" name="image" onchange="Changed()" multiple required>
+            <label id="custom-label"></label>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        
+        <div class="mb-3 ">
+            <label for="price" class="form-label">Price:</label>
+            <input type="number" name="camp[price]" class="form-control" id="price" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="des" class="form-label">Description:</label>
+            <textarea class="form-control" name="camp[description]" id="des" rows="3" required></textarea>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    
+</div>
+<script src="/js/validateForms.js"></script>
+<script>
+    function Changed(){
+        var f = document.getElementById('file');
+        var l = document.getElementById('custom-label');
+        if(f.files.length>1){
+            var st='Files: ';
+            for(let ff of f.files){
+                st+=ff.name+' ';
+            }
+            l.innerHTML=st;
+        }
+        
+    }
+</script>

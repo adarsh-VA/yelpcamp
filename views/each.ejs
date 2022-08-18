@@ -1,0 +1,128 @@
+<%- layout('layouts/boilerplate') %> 
+<link rel="stylesheet" href="/css/star.css">
+
+<div class="row">
+
+    <div class="col">
+        <h1><%= cms.title %></h1>
+        <ul class="list-inline">
+            <li class="list-inline-item"><h2><%= cms.location %></h2></li>
+            <li class="list-inline-item"><h4>By: <%= cms.author.username %></h4></li>
+        </ul>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <% cms.images.forEach((img,i)=>{ %> 
+              <div class="carousel-item <%= i===0 ? 'active' : '' %> ">
+                <img src=<%= img.url %>  alt="Image not found" width="650" height="400">
+              </div>
+              <% }) %> 
+            </div>
+            <% if(cms.images.length>1){ %> 
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+            <% } %> 
+        </div>
+        <h3>Price : $<%= cms.price %> </h3>
+        <p><%= cms.description %> </p>
+        <% if(cuser && cms.author.equals(cuser._id)){ %> 
+        <a href="/campgrounds/edit/<%= cms._id %>" class="btn btn-primary">Edit</a><br><br>
+        <form action="/campgrounds/<%= cms._id %>/?_method=DELETE" method="post">
+            <button type="submit" class="btn btn-primary">Delete</button>
+        </form>
+        <% } %> 
+    </div>
+    <div class="col">
+        <h1>Reviews</h1>
+        <% if(cuser){ %> 
+        <form action="/campgrounds/<%= cms._id %>/review" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="txt" class="form-label">Write Review</label>
+                <textarea class="form-control" id="txt" rows="3" name="review" required></textarea>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-11">
+                        <label for="customRange2" class="form-label">Rating</label>
+                        <!-- <input type="range" class="form-range" min="0" max="5" id="customRange2" name="rating" onclick="getValue()"> -->
+                        <fieldset class="starability-basic">
+                            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="rating" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="rating" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="rating" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="rating" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="rating" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+                    <!-- <div class="col mt-4">
+                        <h3 id="val"></h3>
+                    </div> -->
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <% } %> 
+        <hr>
+        <% if(cms.reviews.length>0){ %> 
+            <% for(let r of cms.reviews) {%> 
+                <div class="card">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-11">
+                                <section>
+                                    <h6 class="card-subtitle mb-2 text-muted">By: <%= r.author.username %> </h6>
+                                </section>
+                                <section>
+                                    <p><b>Review : </b><%= r.review %> </p>
+                                </section>
+                                <section>
+                                    <p class="starability-result" data-rating=<%= r.rating %>></p>
+                                </section>
+                            </div>
+                            <div class="col">
+                                <% if(cuser && r.author.equals(cuser._id)){ %>
+                                <form action="/campgrounds/<%= cms._id %>/review/<%= r._id %>/?_method=DELETE"  method="post" id="my_form<%= r._id %> ">
+                                    <a href="javascript:{}" onclick="document.getElementById('my_form<%= r._id %> ').submit(); return false;"><svg xmlns="http://www.w3.org/2000/svg" style="color: red;" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                        <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                                      </svg></a>
+                                </form>
+                                <% } %> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <% } %> 
+        <% }else{ %>
+            <h3>Be the First One to Review</h3> 
+        <% } %> 
+        <% if(!cuser){ %>
+            <a class="btn btn-primary" href="/login?R=/campgrounds/each/<%= cms._id %>" role="button">Review</a>
+        <% } %> 
+    </div>
+
+</div>
+<script>
+    var l = document.getElementById("val");
+    l.innerHTML=document.getElementById("customRange2").value;
+    function getValue(){
+        var l = document.getElementById("val");
+        l.innerHTML=document.getElementById("customRange2").value;
+    }
+    
+</script>
+<script src="/js/validateForms.js"></script>

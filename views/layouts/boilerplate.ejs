@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../partials/head") %> 
+<body class="d-flex flex-column vh-100">
+    <%- include('../partials/navbar') %>
+    <!-- put flash messages variable  -->
+    <div class="container py-3">
+        <%- include("../partials/alert") %>
+        <%- body %> 
+    </div>
+    
+</body>
+<%- include('../partials/footer') %> 
+</html>
