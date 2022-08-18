@@ -1,8 +1,6 @@
 // if(process.env.NODE_ENV !=='production'){
 //     require('dotenv').config();
 // }
-require('dotenv').config();
-console.log(process.env.C_API_KEY);
 
 const express = require("express");
 const ejs_mate=require('ejs-mate');
@@ -19,7 +17,7 @@ const passport = require('passport');
 const plocal = require('passport-local');
 const user = require('./models/userm');
 const auth = require('./routes/auth');
-
+const port = process.env.PORT || 4000;
 
 // middlewares
 app.set('view engine','ejs');
@@ -107,6 +105,6 @@ app.use((err,req,res,next)=>{
     // res.status(statusCode).send(message);
 })
 
-app.listen(4000,(err)=>{
+app.listen(port,(err)=>{
     console.log("server started");
 })
