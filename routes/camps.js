@@ -82,12 +82,12 @@ router.post('/create',isLoggedIn,upload.array('image'),Wrap(async(req,res,next)=
 
 router.delete('/:id',isLoggedIn,Wrap(async(req,res)=>{
     let id = req.params.id;
-    const c = cam.findById(id);
-    for(let img of c.images){
+    const c = await cam.findById(id);
+    c.images.forEach(async(img,i)=>{
         if(img.filename!==""){
             await cloudinary.uploader.destroy(img.filename);
         }
-    }
+    })
     await cam.findByIdAndDelete(id);
     req.flash('success','successfully Deleted campground!');
     res.redirect('/campgrounds')
