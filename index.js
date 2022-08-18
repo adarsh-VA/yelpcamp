@@ -17,6 +17,7 @@ const passport = require('passport');
 const plocal = require('passport-local');
 const user = require('./models/userm');
 const auth = require('./routes/auth');
+const MongoStore = require('connect-mongo')(session);
 const port = process.env.PORT || 4000;
 
 // middlewares
@@ -39,8 +40,15 @@ mon.connect(db)
     console.log(err);
 })
 
+const store = new MongoStore({
+    url:db,
+    secret: 'thisismysecret!',
+    touchAfter: 24*60*60
+})
+
 // Sessions
 const sconfig={
+    store,
     secret:'thisismysecret!',
     resave:false,
     saveUninitialized:true,
