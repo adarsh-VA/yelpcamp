@@ -10,7 +10,7 @@ const {storage, cloudinary} = require('../cloudinary/c');
 // const upload = multer({dest:'uploads/'});
 const upload = multer({storage});
 
-router.get('/',isLoggedIn,async(req,res)=>{
+router.get('/',async(req,res)=>{
     const cms=await cam.find({});
     res.render('campgrounds',{cms,tl:"All Campgrounds"});
 })
@@ -82,6 +82,12 @@ router.post('/create',isLoggedIn,upload.array('image'),Wrap(async(req,res,next)=
 
 router.delete('/:id',isLoggedIn,Wrap(async(req,res)=>{
     let id = req.params.id;
+    const c = cam.findById(id);
+    for(let img of c.images){
+        if(img.filename!==""){
+            await cloudinary.uploader.destroy(img.filename);
+        }
+    }
     await cam.findByIdAndDelete(id);
     req.flash('success','successfully Deleted campground!');
     res.redirect('/campgrounds')
