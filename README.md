@@ -28,7 +28,7 @@ npm install
 ```
 node index.js
 ```
-- You'll be seeing the page running on your localhost on port `3000`
+- You'll be seeing the page running on your localhost on port `4000`
 
 ## Demo
 **Home Page**
