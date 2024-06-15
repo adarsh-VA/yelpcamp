@@ -4,9 +4,6 @@
 
 **YelpCamp**  is a Website which provides the users to analyse the Campgrounds across the world. Users can create their campgrounds or review others, this can be done by creating an account.
 
-Deployed on Heroku:
-https://camp2022.herokuapp.com/
-
 ## Stack
 - Node.js
 - Express.js
